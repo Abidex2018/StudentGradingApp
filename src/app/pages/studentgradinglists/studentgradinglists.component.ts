@@ -11,6 +11,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-studentgradinglists',
@@ -21,6 +23,7 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     MatPaginatorModule,
     CommonModule,
+    MatSnackBarModule
   ],
   template: `
     <div class="table-wrapper">
@@ -166,7 +169,8 @@ export class StudentgradinglistsComponent implements OnInit {
   constructor(
     private subjectService: SubjectserviceService,
     private studentGradeService: StudentgradingserviceService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -223,9 +227,11 @@ export class StudentgradinglistsComponent implements OnInit {
         .DeleteStudentGradeById(studentGrade.studentGradeId)
         .subscribe((response) => {
           if (response.success) {
+            this.showSnackbar('Grade deleted successfully!', 'success');
             console.log(response.data);
             this.loadStudentGrades();
           } else {
+            this.showSnackbar('Failed to delete grade. Try again!', 'error');
             alert('Error deleting grade: ' + response.message);
           }
         });
@@ -248,5 +254,14 @@ export class StudentgradinglistsComponent implements OnInit {
 
   addStudentGrade() {
     this.router.navigate(['/studentgradingform']);
+  }
+
+  private showSnackbar(message: string, type: 'success' | 'error') {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: type === 'success' ? 'snackbar-success' : 'snackbar-error'
+    });
   }
 }

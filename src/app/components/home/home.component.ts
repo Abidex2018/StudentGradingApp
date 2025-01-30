@@ -5,11 +5,7 @@ import { StudentgradinglistsComponent } from "../../pages/studentgradinglists/st
   selector: 'app-home',
   standalone: true,
   imports: [StudentgradinglistsComponent],
-  template: `
-   <app-studentgradinglists></app-studentgradinglists>
-  `,
-  styles: ``
+  template: ` <app-studentgradinglists></app-studentgradinglists> `,
+  styles: ``,
 })
-export class HomeComponent {
-
-}
+export class HomeComponent {}
